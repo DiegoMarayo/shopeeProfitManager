@@ -4,6 +4,8 @@ import com.diego.shopeeProfitManager.service.DesempenhoMensalService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.diego.shopeeProfitManager.service.ProdutoVariacaoService;
+import com.diego.shopeeProfitManager.model.ProdutoVariacao;
 import com.diego.shopeeProfitManager.repository.ProdutoRepository;
 import com.diego.shopeeProfitManager.model.Produto;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -22,10 +24,12 @@ public class ExcelImportService {
 
     private final ProdutoRepository produtoRepository;
     private final DesempenhoMensalService desempenhoMensalService;
+    private final ProdutoVariacaoService produtoVariacaoService;
 
-    public ExcelImportService(ProdutoRepository produtoRepository, DesempenhoMensalService desempenhoMensalService) {
+    public ExcelImportService(ProdutoRepository produtoRepository, DesempenhoMensalService desempenhoMensalService, ProdutoVariacaoService produtoVariacaoService) {
         this.produtoRepository = produtoRepository;
         this.desempenhoMensalService = desempenhoMensalService;
+        this.produtoVariacaoService = produtoVariacaoService;
     }
 
     public void importarExcel(MultipartFile arquivo) {
@@ -117,8 +121,40 @@ public class ExcelImportService {
                         System.out.println("Vendas Pagas: R$ " + vendas);
                         System.out.println("Unidades Vendidas: " + unidades);
 
+                    } else {
+
+                        String idProduto = dataFormatter.formatCellValue(row.getCell(0));
+                        String nomeVariacao = dataFormatter.formatCellValue(row.getCell(4));
+
+                        Long idProdutoMarketplace = Long.parseLong(idProduto);
+                        Long idVariacaoMarketplace = Long.parseLong(idVariacao);
+
+                        var produtoPai = produtoRepository.findByIdProdutoMarketplace(idProdutoMarketplace);
+
+                        if (produtoPai.isPresent()) {
+
+                            ProdutoVariacao variacao = produtoVariacaoService
+                                    .buscarPorIdMarketplace(idVariacaoMarketplace)
+                                    .orElse(new ProdutoVariacao());
+
+                            variacao.setIdVariacaoMarketplace(idVariacaoMarketplace);
+                            variacao.setNomeVariacao(nomeVariacao);
+                            variacao.setProduto(produtoPai.get());
+
+                            produtoVariacaoService.salvar(variacao);
+
+                            System.out.println("Variação cadastrada/atualizada!");
+                            System.out.println("ID Variação: " + idVariacaoMarketplace);
+                            System.out.println("Nome: " + nomeVariacao);
+
+                        } else {
+
+                            System.out.println("Produto pai não encontrado: " + idProdutoMarketplace);
+
+                        }
                     }
                 }
+
             }
 
         } catch (IOException e) {

@@ -35,8 +35,6 @@ public class ProdutoService {
 
         produtoExistente.setIdProdutoMarketplace(produtoAtualizado.getIdProdutoMarketplace());
         produtoExistente.setNomeProduto(produtoAtualizado.getNomeProduto());
-        produtoExistente.setVendasTotal(produtoAtualizado.getVendasTotal());
-        produtoExistente.setQtdVendidos(produtoAtualizado.getQtdVendidos());
 
         return produtoRepository.save(produtoExistente);
     }
