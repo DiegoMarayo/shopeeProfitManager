@@ -1,6 +1,7 @@
 package com.diego.shopeeProfitManager.importacao;
 
 import com.diego.shopeeProfitManager.service.DesempenhoMensalService;
+import com.diego.shopeeProfitManager.service.DesempenhoVariacaoMensalService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,11 +26,13 @@ public class ExcelImportService {
     private final ProdutoRepository produtoRepository;
     private final DesempenhoMensalService desempenhoMensalService;
     private final ProdutoVariacaoService produtoVariacaoService;
+    private final DesempenhoVariacaoMensalService desempenhoVariacaoMensalService;
 
-    public ExcelImportService(ProdutoRepository produtoRepository, DesempenhoMensalService desempenhoMensalService, ProdutoVariacaoService produtoVariacaoService) {
+    public ExcelImportService(ProdutoRepository produtoRepository, DesempenhoMensalService desempenhoMensalService, ProdutoVariacaoService produtoVariacaoService, DesempenhoVariacaoMensalService desempenhoVariacaoMensalService) {
         this.produtoRepository = produtoRepository;
         this.desempenhoMensalService = desempenhoMensalService;
         this.produtoVariacaoService = produtoVariacaoService;
+        this.desempenhoVariacaoMensalService = desempenhoVariacaoMensalService;
     }
 
     public void importarExcel(MultipartFile arquivo) {
@@ -126,6 +129,15 @@ public class ExcelImportService {
                         String idProduto = dataFormatter.formatCellValue(row.getCell(0));
                         String nomeVariacao = dataFormatter.formatCellValue(row.getCell(4));
 
+                        String vendasTexto = dataFormatter.formatCellValue(row.getCell(9));
+                        String unidadesTexto = dataFormatter.formatCellValue(row.getCell(18));
+
+                        BigDecimal vendas = new BigDecimal(
+                                vendasTexto.replace(".", "").replace(",", ".")
+                        );
+
+                        Integer unidades = Integer.parseInt(unidadesTexto);
+
                         Long idProdutoMarketplace = Long.parseLong(idProduto);
                         Long idVariacaoMarketplace = Long.parseLong(idVariacao);
 
@@ -142,6 +154,14 @@ public class ExcelImportService {
                             variacao.setProduto(produtoPai.get());
 
                             produtoVariacaoService.salvar(variacao);
+
+                            desempenhoVariacaoMensalService.salvarOuAtualizarDesempenhoVariacaoMensal(
+                                    idVariacaoMarketplace,
+                                    mes,
+                                    ano,
+                                    vendas,
+                                    unidades
+                            );
 
                             System.out.println("Variação cadastrada/atualizada!");
                             System.out.println("ID Variação: " + idVariacaoMarketplace);
