@@ -43,8 +43,7 @@ public class ConfiguracaoImpostoService {
 
         return  configuracaoImpostoRepository.findByMesAndAno(mes, ano)
                 .orElseThrow(()-> new RuntimeException(
-                        "Configuracao de imposto não encontrada para o periodo informado"
-                ));
+                        "Configuracao de imposto não encontrada para o periodo informado"));
 
     }
 
