@@ -12,4 +12,5 @@ public interface DesempenhoMensalRepository extends JpaRepository<DesempenhoMens
             Integer mesReferencia,
             Integer anoReferencia
     );
+
 }

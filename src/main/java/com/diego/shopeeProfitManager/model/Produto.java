@@ -1,7 +1,8 @@
 package com.diego.shopeeProfitManager.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-
+import java.util.List;
 
 @Entity
 @Table(name = "produto")
@@ -16,6 +17,10 @@ public class Produto {
 
     @Column(name = "nome_produto", nullable = false, length = 500)
     private String nomeProduto;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "produto")
+    private List<CustoProduto> custosProduto;
 
     public Produto() {}
 
@@ -39,4 +44,11 @@ public class Produto {
         this.nomeProduto = nomeProduto;
     }
 
+    public List<CustoProduto> getCustosProduto() {
+        return custosProduto;
+    }
+
+    public void setCustosProduto(List<CustoProduto> custosProduto) {
+        this.custosProduto = custosProduto;
+    }
 }
