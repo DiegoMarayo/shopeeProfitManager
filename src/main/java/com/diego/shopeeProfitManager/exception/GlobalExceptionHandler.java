@@ -9,6 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
+import jakarta.validation.ConstraintViolationException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -65,6 +66,28 @@ public class GlobalExceptionHandler {
                 .filter(m -> m != null)
                 .findFirst()
                 .orElse("Dados inválidos.");
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                mensagem,
+                request.getRequestURI()
+        );
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ErrorResponse> tratarErroParametros(
+            ConstraintViolationException exception,
+            HttpServletRequest request) {
+
+        String mensagem = exception.getConstraintViolations()
+                .stream()
+                .map(violacao -> violacao.getMessage())
+                .findFirst()
+                .orElse("Parâmetros inválidos.");
 
         ErrorResponse errorResponse = new ErrorResponse(
                 LocalDateTime.now(),

@@ -3,6 +3,10 @@ package com.diego.shopeeProfitManager.controller;
 import com.diego.shopeeProfitManager.dto.CustoProdutoImportacaoDTO;
 import com.diego.shopeeProfitManager.service.CustoProdutoService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Positive;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.diego.shopeeProfitManager.model.CustoProduto;
 
@@ -11,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/custos")
+@Validated
 public class CustoProdutoController {
 
     private final CustoProdutoService custoProdutoService;
@@ -21,9 +26,10 @@ public class CustoProdutoController {
 
     @PostMapping("/{produtoId}/{mes}/{ano}")
     public CustoProduto cadastrarCusto(
-            @PathVariable Long produtoId,
-            @PathVariable Integer mes,
-            @PathVariable Integer ano,
+            @PathVariable @Positive(message = "O ID do produto deve ser positivo") Long produtoId,
+            @PathVariable @Min(value = 1, message = "O mês deve ser entre 1 e 12.")
+                @Max(value = 12, message = "O mês deve ser entre 1 e 12.") Integer mes,
+            @PathVariable @Positive(message = "O ano deve ser positivo") Integer ano,
             @RequestBody CustoProduto custoProduto ) {
 
         return custoProdutoService.cadastrarOuAtualizarCusto(produtoId, mes, ano, custoProduto);
@@ -31,26 +37,29 @@ public class CustoProdutoController {
 
     @GetMapping("/{produtoId}/{mes}/{ano}")
     public CustoProduto buscarCusto(
-            @PathVariable Long produtoId,
-            @PathVariable Integer mes,
-            @PathVariable Integer ano ) {
+            @PathVariable @Positive(message = "O ID do produto deve ser positivo") Long produtoId,
+            @PathVariable @Min(value = 1, message = "O mês deve ser entre 1 e 12.")
+            @Max(value = 12, message = "O mês deve ser entre 1 e 12.") Integer mes,
+            @PathVariable @Positive(message = "O ano deve ser positivo") Integer ano ) {
 
         return custoProdutoService.buscarCustoPorProdutoEPeriodo(produtoId, mes, ano);
     }
 
     @GetMapping("/{produtoId}/{mes}/{ano}/unitario")
     public BigDecimal calcularCustoUnitario(
-            @PathVariable Long produtoId,
-            @PathVariable Integer mes,
-            @PathVariable Integer ano) {
+            @PathVariable @Positive(message = "O ID do produto deve ser positivo") Long produtoId,
+            @PathVariable @Min(value = 1, message = "O mês deve ser entre 1 e 12.")
+            @Max(value = 12, message = "O mês deve ser entre 1 e 12.") Integer mes,
+            @PathVariable @Positive(message = "O ano deve ser positivo") Integer ano) {
 
         return custoProdutoService.calcularCustoTotalUnitario(produtoId, mes, ano);
     }
 
     @PostMapping("/importacao/{mes}/{ano}")
     public List<CustoProduto> importarCustoEmLote(
-            @PathVariable Integer mes,
-            @PathVariable Integer ano,
+            @PathVariable @Min(value = 1, message = "O mês deve ser entre 1 e 12.")
+            @Max(value = 12, message = "O mês deve ser entre 1 e 12.") Integer mes,
+            @PathVariable @Positive(message = "O ano deve ser positivo") Integer ano,
             @RequestBody List<@Valid CustoProdutoImportacaoDTO> custos) {
 
         return custoProdutoService.importarCustosEmLote(custos, mes, ano);
@@ -58,9 +67,10 @@ public class CustoProdutoController {
 
     @GetMapping("/{produtoId}/{mes}/{ano}/mensal")
     public BigDecimal calcularCustoTotalMensal(
-            @PathVariable Long produtoId,
-            @PathVariable Integer mes,
-            @PathVariable Integer ano) {
+            @PathVariable @Positive(message = "O ID do produto deve ser positivo") Long produtoId,
+            @PathVariable @Min(value = 1, message = "O mês deve ser entre 1 e 12.")
+            @Max(value = 12, message = "O mês deve ser entre 1 e 12.") Integer mes,
+            @PathVariable @Positive(message = "O ano deve ser positivo") Integer ano) {
 
         return custoProdutoService.calcularCustoTotalMensal(produtoId, mes, ano);
     }
