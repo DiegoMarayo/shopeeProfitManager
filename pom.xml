@@ -11,20 +11,25 @@
 	<groupId>com.diego</groupId>
 	<artifactId>shopeeProfitManager</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name/>
-	<description/>
-	<url/>
-	<licenses>
-		<license/>
-	</licenses>
+	<name>ShopeeProfitManager</name>
+
+	<description>
+		Backend application for managing Shopee sales, product costs, marketplace fees, advertising expenses and monthly financial performance.
+	</description>
+
+	<url>https://github.com/DiegoMarayo/shopeeProfitManager</url>
+
 	<developers>
-		<developer/>
+		<developer>
+			<name>Diego Marayo</name>
+			<url>https://github.com/DiegoMarayo</url>
+		</developer>
 	</developers>
 	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
+		<connection>scm:git:git://github.com/DiegoMarayo/shopeeProfitManager.git</connection>
+		<developerConnection>scm:git:ssh://github.com/DiegoMarayo/shopeeProfitManager.git</developerConnection>
+		<url>https://github.com/DiegoMarayo/shopeeProfitManager</url>
+		<tag>HEAD</tag>
 	</scm>
 	<properties>
 		<java.version>25</java.version>
