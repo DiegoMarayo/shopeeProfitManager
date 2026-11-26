@@ -1,10 +1,12 @@
 package com.diego.shopeeProfitManager.controller;
 
+import com.diego.shopeeProfitManager.dto.CustoProdutoImportacaoDTO;
 import com.diego.shopeeProfitManager.service.CustoProdutoService;
 import org.springframework.web.bind.annotation.*;
 import com.diego.shopeeProfitManager.model.CustoProduto;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @RestController
 @RequestMapping("/custos")
@@ -42,6 +44,15 @@ public class CustoProdutoController {
             @PathVariable Integer ano) {
 
         return custoProdutoService.calcularCustoTotalUnitario(produtoId, mes, ano);
+    }
+
+    @PostMapping("/importacao/{mes}/{ano}")
+    public List<CustoProduto> importarCustoEmLote(
+            @PathVariable Integer mes,
+            @PathVariable Integer ano,
+            @RequestBody List<CustoProdutoImportacaoDTO> custos) {
+
+        return custoProdutoService.importarCustosEmLote(custos, mes, ano);
     }
 
     @GetMapping("/{produtoId}/{mes}/{ano}/mensal")

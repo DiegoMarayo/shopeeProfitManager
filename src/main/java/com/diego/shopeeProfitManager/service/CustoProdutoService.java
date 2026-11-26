@@ -1,5 +1,6 @@
 package com.diego.shopeeProfitManager.service;
 
+import com.diego.shopeeProfitManager.dto.CustoProdutoImportacaoDTO;
 import com.diego.shopeeProfitManager.exception.ProdutoNaoEncontradoException;
 import com.diego.shopeeProfitManager.model.CustoProduto;
 import com.diego.shopeeProfitManager.model.Produto;
@@ -7,6 +8,8 @@ import com.diego.shopeeProfitManager.repository.CustoProdutoRepository;
 import com.diego.shopeeProfitManager.repository.DesempenhoMensalRepository;
 import com.diego.shopeeProfitManager.repository.ProdutoRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.math.BigDecimal;
 
@@ -17,7 +20,8 @@ public class CustoProdutoService {
     private final ProdutoRepository produtoRepository;
     private final DesempenhoMensalRepository desempenhoMensalRepository;
 
-    public CustoProdutoService(CustoProdutoRepository custoProdutoRepository, ProdutoRepository produtoRepository, DesempenhoMensalRepository desempenhoMensalRepository) {
+    public CustoProdutoService(CustoProdutoRepository custoProdutoRepository, ProdutoRepository produtoRepository,
+                               DesempenhoMensalRepository desempenhoMensalRepository) {
         this.custoProdutoRepository = custoProdutoRepository;
         this.produtoRepository = produtoRepository;
         this.desempenhoMensalRepository = desempenhoMensalRepository;
@@ -75,6 +79,32 @@ public class CustoProdutoService {
                         "Desempenho mensal não encontrado para o produto")).getQtdVendidos();
 
         return  custoUnitario.multiply(BigDecimal.valueOf(quantidadeVendida));
+    }
+
+    public List<CustoProduto> importarCustosEmLote(
+            List<CustoProdutoImportacaoDTO> custos,
+            Integer mes,
+            Integer ano) {
+
+        List<CustoProduto> custoImportados = new ArrayList<>();
+
+        for (CustoProdutoImportacaoDTO dto : custos) {
+
+            CustoProduto custoProduto = new CustoProduto();
+
+            custoProduto.setCustoProduto(dto.getCustoProduto());
+            custoProduto.setCustoEmbalagem(dto.getCustoEmbalagem());
+            custoProduto.setDespesasExtras(dto.getDespesasExtras());
+
+            CustoProduto custoSalvo = cadastrarOuAtualizarCusto(
+                    dto.getProdutoId(),
+                    mes,
+                    ano,
+                    custoProduto);
+
+            custoImportados.add(custoSalvo);
+        }
+        return  custoImportados;
     }
 
 }

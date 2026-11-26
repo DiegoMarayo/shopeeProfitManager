@@ -42,20 +42,14 @@ public class ExcelImportService {
             Integer mes = periodo[0];
             Integer ano = periodo[1];
 
-            System.out.println("Período de referência: " + mes + "/" + ano);
-
         try (InputStream inputStream = arquivo.getInputStream();
              Workbook workbook = WorkbookFactory.create(inputStream)) {
-
-            System.out.println("Arquivo Excel carregado com sucesso!");
 
             // Seleciona a primeira aba
             Sheet sheet = workbook.getSheetAt(0);
 
             // Formata os valores das células como texto
             DataFormatter dataFormatter = new DataFormatter();
-
-            System.out.println("Nome da aba: " + sheet.getSheetName());
 
             // Percorre todas as linhas da planilha, ignorando o cabeçalho
             for (int i = 1; i <= sheet.getLastRowNum(); i++) {
@@ -100,13 +94,9 @@ public class ExcelImportService {
 
                             produtoRepository.save(produtoBanco);
 
-                            System.out.println("Produto atualizado!");
-
                         } else {
 
                             produtoRepository.save(produto);
-
-                            System.out.println("Produto cadastrado!");
 
                         }
 
@@ -117,12 +107,6 @@ public class ExcelImportService {
                                 vendas,
                                 unidades
                         );
-
-                        System.out.println("-----------------------------------");
-                        System.out.println("ID Produto: " + idProduto);
-                        System.out.println("Nome: " + nomeProduto);
-                        System.out.println("Vendas Pagas: R$ " + vendas);
-                        System.out.println("Unidades Vendidas: " + unidades);
 
                     } else {
 
@@ -162,10 +146,6 @@ public class ExcelImportService {
                                     vendas,
                                     unidades
                             );
-
-                            System.out.println("Variação cadastrada/atualizada!");
-                            System.out.println("ID Variação: " + idVariacaoMarketplace);
-                            System.out.println("Nome: " + nomeVariacao);
 
                         } else {
 

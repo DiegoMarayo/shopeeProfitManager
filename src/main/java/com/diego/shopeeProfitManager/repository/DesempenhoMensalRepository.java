@@ -3,6 +3,7 @@ package com.diego.shopeeProfitManager.repository;
 import com.diego.shopeeProfitManager.model.DesempenhoMensal;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface DesempenhoMensalRepository extends JpaRepository<DesempenhoMensal, Long> {
@@ -12,5 +13,7 @@ public interface DesempenhoMensalRepository extends JpaRepository<DesempenhoMens
             Integer mesReferencia,
             Integer anoReferencia
     );
+
+    List<DesempenhoMensal> findByMesReferenciaAndAnoReferencia(Integer mesReferencia, Integer anoReferencia);
 
 }
