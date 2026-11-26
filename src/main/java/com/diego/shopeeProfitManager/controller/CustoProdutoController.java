@@ -2,6 +2,7 @@ package com.diego.shopeeProfitManager.controller;
 
 import com.diego.shopeeProfitManager.dto.CustoProdutoImportacaoDTO;
 import com.diego.shopeeProfitManager.service.CustoProdutoService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 import com.diego.shopeeProfitManager.model.CustoProduto;
 
@@ -50,7 +51,7 @@ public class CustoProdutoController {
     public List<CustoProduto> importarCustoEmLote(
             @PathVariable Integer mes,
             @PathVariable Integer ano,
-            @RequestBody List<CustoProdutoImportacaoDTO> custos) {
+            @RequestBody List<@Valid CustoProdutoImportacaoDTO> custos) {
 
         return custoProdutoService.importarCustosEmLote(custos, mes, ano);
     }
