@@ -1,6 +1,5 @@
 package com.diego.shopeeProfitManager.model;
 
-
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;

@@ -1,5 +1,6 @@
 package com.diego.shopeeProfitManager.service;
 
+import com.diego.shopeeProfitManager.dto.ProdutoRequestDTO;
 import com.diego.shopeeProfitManager.exception.ProdutoNaoEncontradoException;
 import com.diego.shopeeProfitManager.model.Produto;
 import com.diego.shopeeProfitManager.repository.ProdutoRepository;
@@ -20,7 +21,12 @@ public class ProdutoService {
         return produtoRepository.findAll();
     }
 
-    public Produto cadastrarProduto(Produto produto) {
+    public Produto cadastrarProduto(ProdutoRequestDTO dto) {
+
+        Produto produto = new Produto();
+        produto.setIdProdutoMarketplace(dto.getIdProdutoMarketplace());
+        produto.setNomeProduto(dto.getNomeProduto());
+
         return produtoRepository.save(produto);
     }
 
@@ -29,12 +35,12 @@ public class ProdutoService {
                 .orElseThrow(() -> new ProdutoNaoEncontradoException("Produto não encontrado"));
     }
 
-    public Produto atualizarProduto(Long id, Produto produtoAtualizado) {
+    public Produto atualizarProduto(Long id, ProdutoRequestDTO dto) {
         Produto produtoExistente = produtoRepository.findById(id)
                 .orElseThrow(() -> new ProdutoNaoEncontradoException("Produto não encontrado"));
 
-        produtoExistente.setIdProdutoMarketplace(produtoAtualizado.getIdProdutoMarketplace());
-        produtoExistente.setNomeProduto(produtoAtualizado.getNomeProduto());
+        produtoExistente.setIdProdutoMarketplace(dto.getIdProdutoMarketplace());
+        produtoExistente.setNomeProduto(dto.getNomeProduto());
 
         return produtoRepository.save(produtoExistente);
     }

@@ -1,5 +1,6 @@
 package com.diego.shopeeProfitManager.controller;
 
+import com.diego.shopeeProfitManager.dto.ProdutoRequestDTO;
 import com.diego.shopeeProfitManager.model.Produto;
 import com.diego.shopeeProfitManager.service.ProdutoService;
 import jakarta.validation.Valid;
@@ -16,7 +17,7 @@ import java.util.List;
 @Validated
 public class ProdutoController {
 
-    public final ProdutoService produtoService;
+    private final ProdutoService produtoService;
 
     public ProdutoController(ProdutoService produtoService) {
         this.produtoService = produtoService;
@@ -28,8 +29,9 @@ public class ProdutoController {
     }
 
     @PostMapping
-    public ResponseEntity<Produto> cadastrarProduto(@RequestBody @Valid Produto produto) {
-        Produto produtoSalvo = produtoService.cadastrarProduto(produto);
+    public ResponseEntity<Produto> cadastrarProduto(@RequestBody @Valid ProdutoRequestDTO dto) {
+
+        Produto produtoSalvo = produtoService.cadastrarProduto(dto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(produtoSalvo);
     }
@@ -41,10 +43,10 @@ public class ProdutoController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Produto> atualizarProduto(@PathVariable @Positive(message = "O ID deve ser positivo.")
-                                                        Long id, @RequestBody @Valid Produto produto) {
-        Produto produtoAtulizado = produtoService.atualizarProduto(id, produto);
+                                                        Long id, @RequestBody @Valid ProdutoRequestDTO dto) {
+        Produto produtoAtualizado = produtoService.atualizarProduto(id, dto);
 
-        return ResponseEntity.ok(produtoAtulizado);
+        return ResponseEntity.ok(produtoAtualizado);
     }
 
     @DeleteMapping("/{id}")

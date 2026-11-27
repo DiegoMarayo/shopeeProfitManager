@@ -2,12 +2,15 @@ package com.diego.shopeeProfitManager.controller;
 
 import com.diego.shopeeProfitManager.model.ConfiguracaoImposto;
 import com.diego.shopeeProfitManager.service.ConfiguracaoImpostoService;
+import jakarta.validation.Valid;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/config/imposto")
+@Validated
 public class ConfiguracaoImpostoController {
 
     private final ConfiguracaoImpostoService configuracaoImpostoService;
@@ -18,9 +21,9 @@ public class ConfiguracaoImpostoController {
 
     @PostMapping("/{mes}/{ano}")
     public ConfiguracaoImposto cadastrarOuAtualizar(
-            @PathVariable Integer mes,
-            @PathVariable Integer ano,
-            @RequestBody ConfiguracaoImposto configuracaoImposto) {
+            @PathVariable  Integer mes,
+            @PathVariable  Integer ano,
+            @RequestBody @Valid ConfiguracaoImposto configuracaoImposto) {
 
         return configuracaoImpostoService.cadastrarOuAtualizar(mes, ano, configuracaoImposto);
 
@@ -28,8 +31,8 @@ public class ConfiguracaoImpostoController {
 
     @GetMapping("/{mes}/{ano}")
     public ConfiguracaoImposto buscarPorPeriodo(
-            @PathVariable Integer mes,
-            @PathVariable Integer ano) {
+            @PathVariable  Integer mes,
+            @PathVariable  Integer ano) {
 
         return configuracaoImpostoService.buscarPorPeriodo(mes, ano);
 
