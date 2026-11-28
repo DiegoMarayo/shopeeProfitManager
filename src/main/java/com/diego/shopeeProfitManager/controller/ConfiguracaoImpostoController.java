@@ -1,5 +1,6 @@
 package com.diego.shopeeProfitManager.controller;
 
+import com.diego.shopeeProfitManager.dto.ConfiguracaoImpostoRequestDTO;
 import com.diego.shopeeProfitManager.model.ConfiguracaoImposto;
 import com.diego.shopeeProfitManager.service.ConfiguracaoImpostoService;
 import jakarta.validation.Valid;
@@ -23,9 +24,9 @@ public class ConfiguracaoImpostoController {
     public ConfiguracaoImposto cadastrarOuAtualizar(
             @PathVariable  Integer mes,
             @PathVariable  Integer ano,
-            @RequestBody @Valid ConfiguracaoImposto configuracaoImposto) {
+            @RequestBody @Valid ConfiguracaoImpostoRequestDTO dto) {
 
-        return configuracaoImpostoService.cadastrarOuAtualizar(mes, ano, configuracaoImposto);
+        return configuracaoImpostoService.cadastrarOuAtualizar(mes, ano, dto);
 
     }
 

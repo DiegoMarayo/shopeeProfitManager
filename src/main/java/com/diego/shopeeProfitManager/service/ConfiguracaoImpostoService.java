@@ -1,5 +1,6 @@
 package com.diego.shopeeProfitManager.service;
 
+import com.diego.shopeeProfitManager.dto.ConfiguracaoImpostoRequestDTO;
 import com.diego.shopeeProfitManager.model.ConfiguracaoImposto;
 import com.diego.shopeeProfitManager.repository.ConfiguracaoImpostoRepository;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ public class ConfiguracaoImpostoService {
     public ConfiguracaoImposto cadastrarOuAtualizar(
             Integer mes,
             Integer ano,
-            ConfiguracaoImposto configuracao) {
+            ConfiguracaoImpostoRequestDTO dto) {
 
         Optional<ConfiguracaoImposto> configuracaoExistente =
                 configuracaoImpostoRepository.findByMesAndAno(mes, ano);
@@ -28,13 +29,16 @@ public class ConfiguracaoImpostoService {
 
             ConfiguracaoImposto existente = configuracaoExistente.get();
 
-            existente.setImpostoPercentual(configuracao.getImpostoPercentual());
+            existente.setImpostoPercentual(dto.getImpostoPercentual());
 
             return configuracaoImpostoRepository.save(existente);
         }
 
+        ConfiguracaoImposto configuracao = new ConfiguracaoImposto();
+
         configuracao.setMes(mes);
         configuracao.setAno(ano);
+        configuracao.setImpostoPercentual(dto.getImpostoPercentual());
 
         return configuracaoImpostoRepository.save(configuracao);
     }
