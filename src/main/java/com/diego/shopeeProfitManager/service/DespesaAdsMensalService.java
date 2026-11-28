@@ -1,5 +1,6 @@
 package com.diego.shopeeProfitManager.service;
 
+import com.diego.shopeeProfitManager.dto.DespesaAdsMensalRequestDTO;
 import com.diego.shopeeProfitManager.model.DespesaAdsMensal;
 import com.diego.shopeeProfitManager.repository.DespesaAdsMensalRepository;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ public class DespesaAdsMensalService {
     public DespesaAdsMensal cadastrarOuAtualizar(
             Integer mes,
             Integer ano,
-            DespesaAdsMensal adsMensal) {
+            DespesaAdsMensalRequestDTO dto) {
 
         Optional<DespesaAdsMensal> despesaAdsMensalExistente =
                 despesaAdsMensalRepository.findByMesAndAno(mes, ano);
@@ -29,14 +30,17 @@ public class DespesaAdsMensalService {
 
             DespesaAdsMensal existente = despesaAdsMensalExistente.get();
 
-            existente.setAdsMensal(adsMensal.getAdsMensal());
+            existente.setAdsMensal(dto.getAdsMensal());
 
             return despesaAdsMensalRepository.save(existente);
 
         }
 
+        DespesaAdsMensal adsMensal = new DespesaAdsMensal();
+
         adsMensal.setMes(mes);
         adsMensal.setAno(ano);
+        adsMensal.setAdsMensal(dto.getAdsMensal());
 
         return despesaAdsMensalRepository.save(adsMensal);
 

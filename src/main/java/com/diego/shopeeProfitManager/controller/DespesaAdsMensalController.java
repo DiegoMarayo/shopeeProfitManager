@@ -1,7 +1,9 @@
 package com.diego.shopeeProfitManager.controller;
 
+import com.diego.shopeeProfitManager.dto.DespesaAdsMensalRequestDTO;
 import com.diego.shopeeProfitManager.model.DespesaAdsMensal;
 import com.diego.shopeeProfitManager.service.DespesaAdsMensalService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,9 +22,9 @@ public class DespesaAdsMensalController {
     public DespesaAdsMensal cadastrarOuAtualizar(
             @PathVariable Integer mes,
             @PathVariable Integer ano,
-            @RequestBody DespesaAdsMensal despesaAdsMensal) {
+            @RequestBody @Valid DespesaAdsMensalRequestDTO dto) {
 
-        return despesaAdsMensalService.cadastrarOuAtualizar(mes, ano, despesaAdsMensal);
+        return despesaAdsMensalService.cadastrarOuAtualizar(mes, ano, dto);
 
     }
 
