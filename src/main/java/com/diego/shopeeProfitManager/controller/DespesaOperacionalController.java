@@ -1,7 +1,9 @@
 package com.diego.shopeeProfitManager.controller;
 
+import com.diego.shopeeProfitManager.dto.DespesaOperacionalRequestDTO;
 import com.diego.shopeeProfitManager.model.DespesaOperacional;
 import com.diego.shopeeProfitManager.service.DespesaOperacionalService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,9 +22,9 @@ public class DespesaOperacionalController {
     public DespesaOperacional cadastrar(
             @PathVariable Integer mes,
             @PathVariable Integer ano,
-            @RequestBody DespesaOperacional despesaOperacional) {
+            @RequestBody @Valid DespesaOperacionalRequestDTO dto) {
 
-        return despesaOperacionalService.cadastrar(mes, ano, despesaOperacional);
+        return despesaOperacionalService.cadastrar(mes, ano, dto);
 
     }
 

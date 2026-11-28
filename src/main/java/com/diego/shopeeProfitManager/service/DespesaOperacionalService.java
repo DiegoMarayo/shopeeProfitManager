@@ -1,5 +1,6 @@
 package com.diego.shopeeProfitManager.service;
 
+import com.diego.shopeeProfitManager.dto.DespesaOperacionalRequestDTO;
 import com.diego.shopeeProfitManager.model.DespesaOperacional;
 import com.diego.shopeeProfitManager.repository.DespesaOperacionalRepository;
 import org.springframework.stereotype.Service;
@@ -18,10 +19,15 @@ public class DespesaOperacionalService {
     public DespesaOperacional cadastrar(
             Integer mes,
             Integer ano,
-            DespesaOperacional despesaOperacional) {
+            DespesaOperacionalRequestDTO dto) {
+
+        DespesaOperacional despesaOperacional = new DespesaOperacional();
 
         despesaOperacional.setMes(mes);
         despesaOperacional.setAno(ano);
+        despesaOperacional.setCategoria(dto.getCategoria());
+        despesaOperacional.setDescricao(dto.getDescricao());
+        despesaOperacional.setValor(dto.getValor());
 
         return despesaOperacionalRepository.save(despesaOperacional);
 
