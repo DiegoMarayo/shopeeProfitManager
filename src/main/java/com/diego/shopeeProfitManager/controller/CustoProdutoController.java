@@ -1,6 +1,7 @@
 package com.diego.shopeeProfitManager.controller;
 
 import com.diego.shopeeProfitManager.dto.CustoProdutoImportacaoDTO;
+import com.diego.shopeeProfitManager.dto.CustoProdutoRequestDTO;
 import com.diego.shopeeProfitManager.service.CustoProdutoService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
@@ -30,9 +31,9 @@ public class CustoProdutoController {
             @PathVariable @Min(value = 1, message = "O mês deve ser entre 1 e 12.")
                 @Max(value = 12, message = "O mês deve ser entre 1 e 12.") Integer mes,
             @PathVariable @Positive(message = "O ano deve ser positivo") Integer ano,
-            @RequestBody CustoProduto custoProduto ) {
+            @RequestBody @Valid CustoProdutoRequestDTO dto) {
 
-        return custoProdutoService.cadastrarOuAtualizarCusto(produtoId, mes, ano, custoProduto);
+        return custoProdutoService.cadastrarOuAtualizarCusto(produtoId, mes, ano, dto);
     }
 
     @GetMapping("/{produtoId}/{mes}/{ano}")

@@ -1,6 +1,7 @@
 package com.diego.shopeeProfitManager.service;
 
 import com.diego.shopeeProfitManager.dto.CustoProdutoImportacaoDTO;
+import com.diego.shopeeProfitManager.dto.CustoProdutoRequestDTO;
 import com.diego.shopeeProfitManager.exception.ProdutoNaoEncontradoException;
 import com.diego.shopeeProfitManager.model.CustoProduto;
 import com.diego.shopeeProfitManager.model.Produto;
@@ -27,7 +28,8 @@ public class CustoProdutoService {
         this.desempenhoMensalRepository = desempenhoMensalRepository;
     }
 
-    public CustoProduto cadastrarOuAtualizarCusto(Long produtoId, Integer mes, Integer ano, CustoProduto custoProduto) {
+    public CustoProduto cadastrarOuAtualizarCusto(
+            Long produtoId, Integer mes, Integer ano, CustoProdutoRequestDTO dto) {
 
         Produto produto = produtoRepository.findById(produtoId)
                 .orElseThrow(() -> new ProdutoNaoEncontradoException("Produto não encontrado"));
@@ -38,9 +40,9 @@ public class CustoProdutoService {
         custoExistente.setProduto(produto);
         custoExistente.setMes(mes);
         custoExistente.setAno(ano);
-        custoExistente.setCustoProduto(custoProduto.getCustoProduto());
-        custoExistente.setCustoEmbalagem(custoProduto.getCustoEmbalagem());
-        custoExistente.setDespesasExtras(custoProduto.getDespesasExtras());
+        custoExistente.setCustoProduto(dto.getCustoProduto());
+        custoExistente.setCustoEmbalagem(dto.getCustoEmbalagem());
+        custoExistente.setDespesasExtras(dto.getDespesasExtras());
 
         return custoProdutoRepository.save(custoExistente);
 
@@ -90,17 +92,17 @@ public class CustoProdutoService {
 
         for (CustoProdutoImportacaoDTO dto : custos) {
 
-            CustoProduto custoProduto = new CustoProduto();
+            CustoProdutoRequestDTO custoDTO = new CustoProdutoRequestDTO();
 
-            custoProduto.setCustoProduto(dto.getCustoProduto());
-            custoProduto.setCustoEmbalagem(dto.getCustoEmbalagem());
-            custoProduto.setDespesasExtras(dto.getDespesasExtras());
+            custoDTO.setCustoProduto(dto.getCustoProduto());
+            custoDTO.setCustoEmbalagem(dto.getCustoEmbalagem());
+            custoDTO.setDespesasExtras(dto.getDespesasExtras());
 
             CustoProduto custoSalvo = cadastrarOuAtualizarCusto(
                     dto.getProdutoId(),
                     mes,
                     ano,
-                    custoProduto);
+                    custoDTO);
 
             custoImportados.add(custoSalvo);
         }
