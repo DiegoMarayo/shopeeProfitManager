@@ -1,7 +1,9 @@
 package com.diego.shopeeProfitManager.controller;
 
+import com.diego.shopeeProfitManager.dto.ConfiguracaoMarketplaceRequestDTO;
 import com.diego.shopeeProfitManager.model.ConfiguracaoMarketplace;
 import com.diego.shopeeProfitManager.service.ConfiguracaoMarketplaceService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,9 +22,9 @@ public class ConfiguracaoMarketplaceController {
     public ConfiguracaoMarketplace cadastrarOuAtualizar(
             @PathVariable Integer mes,
             @PathVariable Integer ano,
-            @RequestBody ConfiguracaoMarketplace configuracao) {
+            @RequestBody @Valid ConfiguracaoMarketplaceRequestDTO dto) {
 
-        return configuracaoMarketplaceService.cadastrarOuAtualizar(mes, ano, configuracao);
+        return configuracaoMarketplaceService.cadastrarOuAtualizar(mes, ano, dto);
 
     }
 

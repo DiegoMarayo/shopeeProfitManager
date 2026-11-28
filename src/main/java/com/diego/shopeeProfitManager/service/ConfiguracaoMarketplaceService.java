@@ -1,5 +1,6 @@
 package com.diego.shopeeProfitManager.service;
 
+import com.diego.shopeeProfitManager.dto.ConfiguracaoMarketplaceRequestDTO;
 import com.diego.shopeeProfitManager.model.ConfiguracaoMarketplace;
 import com.diego.shopeeProfitManager.repository.ConfiguracaoMarketplaceRepository;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ public class ConfiguracaoMarketplaceService {
     public ConfiguracaoMarketplace cadastrarOuAtualizar(
             Integer mes,
             Integer ano,
-            ConfiguracaoMarketplace configuracao) {
+            ConfiguracaoMarketplaceRequestDTO dto) {
 
         Optional<ConfiguracaoMarketplace> configuracaoExistente =
                 configuracaoMarketplaceRepository.findByMesAndAno(mes, ano);
@@ -27,14 +28,18 @@ public class ConfiguracaoMarketplaceService {
         if (configuracaoExistente.isPresent()) {
             ConfiguracaoMarketplace existente = configuracaoExistente.get();
 
-            existente.setTaxaPercentual(configuracao.getTaxaPercentual());
-            existente.setTaxaFixaPorPedido(configuracao.getTaxaFixaPorPedido());
+            existente.setTaxaPercentual(dto.getTaxaPercentual());
+            existente.setTaxaFixaPorPedido(dto.getTaxaFixaPorPedido());
 
             return configuracaoMarketplaceRepository.save(existente);
         }
 
+        ConfiguracaoMarketplace configuracao = new ConfiguracaoMarketplace();
+
         configuracao.setMes(mes);
         configuracao.setAno(ano);
+        configuracao.setTaxaFixaPorPedido(dto.getTaxaFixaPorPedido());
+        configuracao.setTaxaPercentual(dto.getTaxaPercentual());
 
         return configuracaoMarketplaceRepository.save(configuracao);
     }
